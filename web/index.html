@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Imobiliaria — imóveis com inteligência</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="logo">Imobiliaria</span>
+    </div>
+    <nav class="menu">
+      <a href="#busca">Procurar Imóveis</a>
+      <a href="#propostas">Propostas</a>
+      <a href="#condominios">Condomínios</a>
+      <button class="btn btn-claro" id="btn-entrar" type="button">Entrar</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Encontre, negocie e feche o imóvel certo</h1>
+      <p class="sub">Uma plataforma de imóveis com inteligência artificial e agentes
+        trabalhando para captar clientes, alugar e vender.</p>
+      <form class="busca" id="form-busca" autocomplete="off">
+        <input type="text" id="campo-busca" name="q"
+               placeholder="Ex.: casa com 3 quartos até 1 milhão em Campinas…">
+        <button class="btn" type="submit">Procurar Imóveis</button>
+      </form>
+      <p class="aviso" id="aviso" role="status"></p>
+
+      <div class="filtros" id="filtros" aria-label="Filtros avançados">
+        <label>Tipo
+          <select id="f-tipo" name="tipo">
+            <option value="">Qualquer</option>
+          </select>
+        </label>
+        <label>Local
+          <select id="f-local" name="local">
+            <option value="">Qualquer</option>
+          </select>
+        </label>
+        <label>Quartos (mín.)
+          <select id="f-quartos" name="quartos_min">
+            <option value="">Qualquer</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </label>
+        <label>Preço até (R$)
+          <input type="number" id="f-preco" name="preco_max"
+                 min="0" step="10000" placeholder="ex.: 800000">
+        </label>
+        <label>Operação
+          <select id="f-operacao" name="operacao">
+            <option value="">Qualquer</option>
+            <option value="venda">Venda</option>
+            <option value="aluguel">Aluguel</option>
+          </select>
+        </label>
+        <button class="btn btn-claro" type="submit">Aplicar filtros</button>
+        <button class="btn btn-limpar" type="button" id="btn-limpar">Limpar</button>
+      </div>
+    </section>
+
+    <section class="resultados" id="resultados" hidden>
+      <div class="resultados-topo">
+        <h2 id="resumo-busca"></h2>
+        <p class="interpretacao" id="interpretacao"></p>
+      </div>
+      <div class="lista-imoveis" id="lista-imoveis"></div>
+      <p class="vazio" id="sem-resultados" hidden>
+        Nenhum imóvel encontrado. Tente ajustar os filtros.
+      </p>
+    </section>
+
+    <section class="propostas" id="propostas">
+      <div class="propostas-topo">
+        <h2>Propostas de venda com IA</h2>
+        <p>Informe o cliente e a IA cruza o histórico de negociações com as
+          tendências de mercado para montar uma proposta personalizada.</p>
+      </div>
+      <form class="form-proposta" id="form-proposta" autocomplete="off">
+        <label class="campo-largo">Imóvel
+          <select id="p-imovel" name="imovel_id" required>
+            <option value="">Selecione um imóvel…</option>
+          </select>
+        </label>
+        <label>Nome do cliente
+          <input type="text" id="p-nome" name="nome" placeholder="ex.: Ana Souza">
+        </label>
+        <label>Orçamento (R$)
+          <input type="number" id="p-orcamento" name="orcamento"
+                 min="0" step="10000" placeholder="ex.: 800000">
+        </label>
+        <label>Forma de pagamento
+          <select id="p-forma" name="forma_pagamento"></select>
+        </label>
+        <label>Urgência
+          <select id="p-urgencia" name="urgencia"></select>
+        </label>
+        <label>Tom da proposta
+          <select id="p-tom" name="tom"></select>
+        </label>
+        <label class="campo-largo">Preferências do cliente
+          <input type="text" id="p-preferencias" name="preferencias"
+                 placeholder="ex.: metrô, varanda, perto do trabalho">
+        </label>
+        <label class="campo-largo">Observações
+          <input type="text" id="p-obs" name="observacoes"
+                 placeholder="ex.: primeiro imóvel, precisa de mudança rápida">
+        </label>
+        <button class="btn" type="submit">Gerar proposta com IA</button>
+      </form>
+      <p class="aviso" id="aviso-proposta" role="status"></p>
+      <div id="proposta-resultado" class="proposta-resultado" hidden></div>
+    </section>
+
+    <section class="condominios" id="condominios">
+      <div class="condominios-topo">
+        <h2>Gestão de condomínios</h2>
+        <p>Coleta de dados, análise de rotatividade e planejamento de manutenção
+          em um só painel, com recomendações da IA local.</p>
+      </div>
+
+      <div class="painel-resumo" id="condo-resumo"></div>
+
+      <div class="condo-grade">
+        <div class="lista-condos" id="lista-condos" aria-label="Condomínios"></div>
+        <div class="condo-detalhe" id="condo-detalhe" hidden></div>
+      </div>
+
+      <form class="form-coleta" id="form-coleta" autocomplete="off">
+        <label>Condomínio
+          <select id="c-condo" name="condominio_id" required>
+            <option value="">Selecione…</option>
+          </select>
+        </label>
+        <label>Tipo de dado
+          <select id="c-tipo" name="tipo"></select>
+        </label>
+        <label>Valor
+          <input type="text" id="c-valor" name="valor"
+                 placeholder="ex.: 92% de ocupação">
+        </label>
+        <label class="campo-largo">Observação
+          <input type="text" id="c-obs" name="observacao"
+                 placeholder="ex.: 3 contratos vencem em outubro">
+        </label>
+        <button class="btn" type="submit">Registrar coleta</button>
+      </form>
+      <p class="aviso" id="aviso-coleta" role="status"></p>
+      <div class="coletas" id="coletas" hidden></div>
+    </section>
+
+    <section class="recursos">
+      <article class="card">
+        <h2>Busca inteligente</h2>
+        <p>Filtre por preço, localização, quartos e tipo — com sugestões de IA.</p>
+      </article>
+      <article class="card">
+        <h2>Propostas de venda</h2>
+        <p>Propostas personalizadas a partir de dados históricos e do mercado.</p>
+      </article>
+      <article class="card">
+        <h2>Gestão de condomínios</h2>
+        <p>Rotatividade, manutenção e planejamento em um só painel.</p>
+      </article>
+    </section>
+
+    <section class="status">
+      <span class="badge" id="status-app">conectando…</span>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span>Imobiliaria · MVP local · somente biblioteca padrão do Python</span>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
